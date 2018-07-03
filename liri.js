@@ -1,15 +1,16 @@
 require("dotenv").config();
 
-var twitter = require('twitter');
-var spotify = require('spotify');
+var Twitter = require('twitter');
+var Spotify = require("node-spotify-api");
 
 
 var request = require('request');
-var fs = require('file-system');
+// var fs = require('file-system');
+var fs = require("fs");
 
 var keys = require('./keys.js');
 var twitterkeys = new twitter(keys.twitter);
-var spotifykeys = new spotify(keys.spotify);
+var spotify = new spotify(keys.spotify);
 
 var nodeArg = process.argv;
 var liriCmnd = process.arch[2];
@@ -40,12 +41,14 @@ switch(liriCmnd) {
     }
     break;
 
-    
+
+
+
 
 }//switchcmnd
 
 function getTweets() {
-    client.get('statuses/user_timeline', params, function(error, tweets, response) {
+    twitterkeys.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
             for (var i=0; i<tweets.statuses.length; i++) {
                 var tweets = tweets.statuses[i].text;
@@ -63,7 +66,7 @@ function getTweets() {
 }//function gettweets
 
 function spotifySong(song){
-    spotify.search({ type: 'track', query: song}, function (error, data) {
+    Spotify({ type: 'track', query: song}, function (error, data) {
         if(!error) {
             for(var i = 0; i < data.tracks.itmes[i]; i++) {
             console.log("Artist: " + songData.artists[0].name);
@@ -115,3 +118,11 @@ function movieOmdb(movies){
     });
 }
 
+function doSomething() {
+    fs.readFile('random.txt', "utf8", function(error, data) {
+        if(error) {
+            console.log(error);
+        }
+            var dataSplit = data.split(",");
+    }) if (dataArr[0])
+}
