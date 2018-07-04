@@ -9,8 +9,8 @@ var request = require('request');
 var fs = require("fs");
 
 var keys = require('./keys.js');
-var twitterkeys = new twitter(keys.twitter);
-var spotify = new spotify(keys.spotify);
+var twitterkeys = new Twitter(keys.twitter);
+// var Spotify = new Spotify(keys.spotify);
 
 var nodeArg = process.argv;
 var liriCmnd = process.arch[2];
@@ -41,10 +41,9 @@ switch(liriCmnd) {
     }
     break;
 
-
-
-
-
+    case "do-what-it-says":
+    doSomething();
+    break;
 }//switchcmnd
 
 function getTweets() {
@@ -87,7 +86,7 @@ function spotifySong(song){
     });
 }
 
-//key http://www.omdbapi.com/?i=tt3896198&apikey=12e4f227
+
 function movieOmdb(movies){
     var queryUrl = "http://www.omdbapi.com/?t=" + movies + "&y=&plot=short&tomatoes=true&r=json";
 
@@ -123,6 +122,20 @@ function doSomething() {
         if(error) {
             console.log(error);
         }
-            var dataSplit = data.split(",");
-    }) if (dataArr[0])
+         var dataSplit = data.split(",");
+
+         if (dataSplit[0] === "spotify-this-song") {
+            var songChk = dataSplit[1].slice(1, -1);
+            spotify(songChk);
+        } else if (dataSplit[0] === "my-tweets") {
+            var tweetSome = dataSplit[1].slice(1, -1);
+            getTweets(tweetSome);
+        } else if (dataSplit[0] === "movie-this") {
+            var movieName = dataSplit[1].slice(1, -1);
+            movieOmdb(movieName);
+        }
+    }) 
 }
+
+
+
